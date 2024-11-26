@@ -2,7 +2,7 @@ import React from 'react';
 
 // Input Field Component
 const InputField = ({ name, type, value, disabled, onChange, label, placeholder, error, onInput, className }) => (
-  <div className="mb-4">
+  <div>
     <label className="input-label">{label}</label>
     <div className="flex">
       {type === 'tel' && (
