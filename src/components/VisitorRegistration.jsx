@@ -96,21 +96,21 @@ const VisitorRegistration = () => {
   return (
     <>
       <Toaster position="top-right" reverseOrder={false} />
-      <div className="h-screen w-screen bg-[url('/img/login-bg.svg')] bg-no-repeat bg-center bg-cover overflow-x-hidden before:relative">
+      <div className="min-h-screen min-w-full bg-[url('/img/login-bg.svg')] bg-no-repeat bg-center bg-cover before:relative">
         <div className="flex flex-col mt-3 md:mt-0 md:justify-center items-center min-h-screen">
           <div className="flex space-x-3 items-center justify-center">
             <Image width={50} height={50} src={'/img/logo.svg'} />
             <h1 className="text-primary text-5xl font-serif tracking-widest">VMS</h1>
           </div>
-          <div className="md:mx-aut w-11/12 sm:w-2/3 lg:w-1/2 2xl:w-2/5 bg-white rounded-xl shadow-[0px_0px_7px_0px_rgba(0,0,0,0.1)] p-4 md:p-6 my-3 md:my-6">
+          <div className="md:mx-aut w-11/12 sm:w-2/3 xl:w-1/2 2xl:w-2/5 bg-white rounded-xl shadow-[0px_0px_7px_0px_rgba(0,0,0,0.1)] p-4 md:p-6 my-3 md:my-6">
             <h2 className="text-2xl font-semibold text-gray-800 mb-3 md:mb-6 text-center">Register New Visitor</h2>
             <form onSubmit={handleRegister} className="space-y-6 w-full">
-              <div className="md:space-y-4">
+              <div className="space-y-2">
                 <h2 className="text-lg font-medium text-gray-700 flex items-center gap-2">
                   <FontAwesomeIcon width={20} height={20} icon={faUser} className="text-primary" />
                   Visitor Details
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
                   <InputField
                     name="fullName"
                     type="text"
@@ -192,7 +192,7 @@ const VisitorRegistration = () => {
                 </div>
               </div>
 
-              <div className="md:space-y-4">
+              <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-medium text-gray-700 flex items-center gap-2">
                     <FontAwesomeIcon width={20} height={20} icon={faCar} className="text-primary" />
@@ -206,12 +206,14 @@ const VisitorRegistration = () => {
                       onChange={(e) => setNeedsCab(e.target.checked)}
                     />
                     <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-100 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                    <span className="ms-3 text-sm font-medium text-gray-700 sm:inline-block hidden">Need cab pickup</span>
-                  </label>  
+                    <span className="ms-3 text-sm font-medium text-gray-700 sm:inline-block hidden">
+                      Need cab pickup
+                    </span>
+                  </label>
                 </div>
 
                 {needsCab && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 p-4 bg-gray-50 rounded-lg">
                     <InputField
                       name="pickupLocation"
                       type="text"
