@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faUser,
-  faCar,
-  faEnvelope,
-  faCheckCircle,
-  faQrcode,
-  faArrowRightLong,
-  faArrowRight,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCar, faEnvelope, faCheckCircle, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import toast, { Toaster } from 'react-hot-toast';
 import { handleChange, handleNumericInput, validateForm, validationRules } from '@/utils/formUtils';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -112,7 +104,7 @@ const VisitorRegistration = () => {
         title={'Visitor Registration Confirmation'}
         onClose={() => setShowModal(false)}
         children={
-          <div className="p-6 mx-auto space-y-6">
+          <div className="md:p-6 p-4 mx-auto space-y-6">
             <div className="flex flex-col items-center space-y-4">
               <div className="bg-blue-50 p-4 rounded-xl border-2 border-blue-100 hover:shadow-md transition-all duration-300">
                 <Image
@@ -125,7 +117,7 @@ const VisitorRegistration = () => {
               </div>
 
               <Link
-                href={`visitor-details?id=${visitData?._id}`}
+                href={`visitor-details?id=${visitData?.visitorId}`}
                 className="text-primary hover:text-blue-800 transition-colors flex items-center space-x-2"
               >
                 <span>Scan QR code or click here for details</span>
@@ -136,7 +128,7 @@ const VisitorRegistration = () => {
 
             <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 shadow-sm">
               <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 rounded-full p-3">
+                <div className="bg-blue-100 rounded-full p-2 flex justify-center items-center">
                   <FontAwesomeIcon width={25} height={25} icon={faCheckCircle} className="text-primary text-2xl" />
                 </div>
                 <div>
@@ -155,7 +147,6 @@ const VisitorRegistration = () => {
               </div>
             </div>
 
-            {/* Additional Context */}
             <div className="text-center">
               <p className="text-xs text-gray-500">Please keep this QR code handy for your visit</p>
             </div>

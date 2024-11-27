@@ -1,6 +1,6 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const Modal = ({ isOpen, onClose, title, handleSubmit, children, loading }) => {
   if (!isOpen) return null;
@@ -10,6 +10,18 @@ const Modal = ({ isOpen, onClose, title, handleSubmit, children, loading }) => {
       onClose();
     }
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    return () => {
+      document.body.classList.remove('overflow-hidden');
+    };
+  }, [isOpen]);
 
   return (
     <div
