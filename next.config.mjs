@@ -8,7 +8,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  env: {},
+  env: {
+    BASE_API_URL: 'https://visitor-management-system-backend.vercel.app/api/',
+    VISITOR_REGISTRATION: 'visitor-register',
+  },
 };
 
 export default nextConfig;

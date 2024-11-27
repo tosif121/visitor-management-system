@@ -3,24 +3,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faCar } from '@fortawesome/free-solid-svg-icons';
 import toast, { Toaster } from 'react-hot-toast';
 import { handleChange, handleNumericInput, validateForm, validationRules } from '@/utils/formUtils';
-import { InputField } from './reusableComponents/InputField';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactDatePicker from 'react-datepicker';
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
 import Image from 'next/image';
 import { setHours, setMinutes } from 'date-fns';
+import { InputField } from './reusableComponents/InputField';
+import axios from 'axios';
+import dynamic from 'next/dynamic';
+import { visitorRegister } from '@/utils/servicesApi';
+const Modal = dynamic(() => import('./reusableComponents/Modal'));
 
 const VisitorRegistration = () => {
-  const router = useRouter();
   const [needsCab, setNeedsCab] = useState(false);
   const [visitDate, setVisitDate] = useState(null);
   const [pickupTime, setPickupTime] = useState(null);
+  const [qrCodeImage, setQrCodeImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
-    phoneNumber: '',
+    mobileNumber: '',
     email: '',
     company: '',
     purpose: '',
@@ -34,7 +37,7 @@ const VisitorRegistration = () => {
     pickupLocation: [(value) => needsCab && validationRules.required(value, 'Pickup Location')],
     company: [(value) => validationRules.required(value, 'Company Name')],
     email: [(value) => validationRules.required(value, 'Email Address'), validationRules.email],
-    phoneNumber: [(value) => validationRules.required(value, 'Mobile Number'), validationRules.mobile],
+    mobileNumber: [(value) => validationRules.required(value, 'Mobile Number'), validationRules.mobile],
   };
 
   const handleRegister = async (e) => {
@@ -58,16 +61,16 @@ const VisitorRegistration = () => {
         ...formData,
         visitDate,
         pickupTime: needsCab ? pickupTime : null,
-        needsCab,
       };
 
-      router.push('/');
+      const res = await visitorRegister(params);
       if (res.status) {
-        toast.success('Visitor registered successfully');
-        Cookies.set('vms_token', res.data.accessToken, { expires: 30, path: '/' });
+        toast.success(res.message || 'Registration successful');
+        setQrCodeImage(res.data.qrCodeImage);
+        setShowModal(true);
         setFormData({
           fullName: '',
-          phoneNumber: '',
+          mobileNumber: '',
           email: '',
           company: '',
           purpose: '',
@@ -81,7 +84,7 @@ const VisitorRegistration = () => {
         toast.error(res.message || 'Registration failed');
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again.');
+      toast.error(error.response?.message || 'An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -96,9 +99,26 @@ const VisitorRegistration = () => {
   return (
     <>
       <Toaster position="top-right" reverseOrder={false} />
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        children={
+          <div className="my-3 text-center flex items-center">
+            <Image src={qrCodeImage} width={100} height={100} alt="qr-code" />
+            <div>
+              <h3 className="text-lg leading-6 font-medium text-gray-800">
+                You visit will be scheduled pending approval.
+              </h3>
+              <h3 className="text-lg leading-6 font-medium text-gray-800">
+                Upon confrimation an email will be sent for you to finalize
+              </h3>
+            </div>
+          </div>
+        }
+      />
       <div className="min-h-screen min-w-full bg-[url('/img/login-bg.svg')] bg-no-repeat bg-center bg-cover before:relative">
         <div className="flex flex-col mt-3 md:mt-0 md:justify-center items-center min-h-screen">
-          <div className="flex space-x-3 items-center justify-center">
+          <div className="flex space-x-3 items-center justify-center md:mt-6 mt-3">
             <Image width={50} height={50} src={'/img/logo.svg'} />
             <h1 className="text-primary text-5xl font-serif tracking-widest">VMS</h1>
           </div>
@@ -125,13 +145,13 @@ const VisitorRegistration = () => {
                   />
 
                   <InputField
-                    name="phoneNumber"
+                    name="mobileNumber"
                     type="tel"
-                    value={formData?.phoneNumber?.replace(/\s+/g, '')}
+                    value={formData?.mobileNumber?.replace(/\s+/g, '')}
                     onChange={(e) => handleNumericInput(e, setFormData, setFormErrors)}
                     label="Mobile Number"
                     placeholder="Enter mobile number"
-                    error={formErrors.phoneNumber}
+                    error={formErrors.mobileNumber}
                   />
 
                   <InputField
@@ -249,7 +269,7 @@ const VisitorRegistration = () => {
                         <textarea
                           name="instructions"
                           value={formData.instructions}
-                          onChange={handleChange}
+                          onChange={(e) => handleChange(e, setFormData, setFormErrors)}
                           className="input-box rounded-md"
                           rows="3"
                           placeholder="Enter additional instructions"
