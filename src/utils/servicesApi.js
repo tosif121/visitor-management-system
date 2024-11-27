@@ -8,3 +8,12 @@ export async function visitorRegister(params) {
     return null;
   }
 }
+
+export async function visitorById(id) {
+  try {
+    const response = await fetcher('GET', `${process.env.VISITOR_BY_ID}${id}`);
+    return response;
+  } catch (err) {
+    return null;
+  }
+}

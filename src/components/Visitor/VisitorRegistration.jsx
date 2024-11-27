@@ -1,23 +1,31 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCar } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUser,
+  faCar,
+  faEnvelope,
+  faCheckCircle,
+  faQrcode,
+  faArrowRightLong,
+  faArrowRight,
+} from '@fortawesome/free-solid-svg-icons';
 import toast, { Toaster } from 'react-hot-toast';
 import { handleChange, handleNumericInput, validateForm, validationRules } from '@/utils/formUtils';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactDatePicker from 'react-datepicker';
 import Image from 'next/image';
 import { setHours, setMinutes } from 'date-fns';
-import { InputField } from './reusableComponents/InputField';
-import axios from 'axios';
+import { InputField } from '../reusableComponents/InputField';
 import dynamic from 'next/dynamic';
 import { visitorRegister } from '@/utils/servicesApi';
-const Modal = dynamic(() => import('./reusableComponents/Modal'));
+import Link from 'next/link';
+const Modal = dynamic(() => import('../reusableComponents/Modal'));
 
 const VisitorRegistration = () => {
   const [needsCab, setNeedsCab] = useState(false);
   const [visitDate, setVisitDate] = useState(null);
   const [pickupTime, setPickupTime] = useState(null);
-  const [qrCodeImage, setQrCodeImage] = useState(null);
+  const [visitData, setVisitData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formErrors, setFormErrors] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -66,7 +74,7 @@ const VisitorRegistration = () => {
       const res = await visitorRegister(params);
       if (res.status) {
         toast.success(res.message || 'Registration successful');
-        setQrCodeImage(res.data.qrCodeImage);
+        setVisitData(res.data);
         setShowModal(true);
         setFormData({
           fullName: '',
@@ -101,17 +109,55 @@ const VisitorRegistration = () => {
       <Toaster position="top-right" reverseOrder={false} />
       <Modal
         isOpen={showModal}
+        title={'Visitor Registration Confirmation'}
         onClose={() => setShowModal(false)}
         children={
-          <div className="my-3 text-center flex items-center">
-            <Image src={qrCodeImage} width={100} height={100} alt="qr-code" />
-            <div>
-              <h3 className="text-lg leading-6 font-medium text-gray-800">
-                You visit will be scheduled pending approval.
-              </h3>
-              <h3 className="text-lg leading-6 font-medium text-gray-800">
-                Upon confrimation an email will be sent for you to finalize
-              </h3>
+          <div className="p-6 mx-auto space-y-6">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="bg-blue-50 p-4 rounded-xl border-2 border-blue-100 hover:shadow-md transition-all duration-300">
+                <Image
+                  src={visitData?.qrCodeImage}
+                  width={200}
+                  height={200}
+                  alt="Visitor QR Code"
+                  className="rounded-lg"
+                />
+              </div>
+
+              <Link
+                href={`visitor-details?id=${visitData?._id}`}
+                className="text-primary hover:text-blue-800 transition-colors flex items-center space-x-2"
+              >
+                <span>Scan QR code or click here for details</span>
+
+                <FontAwesomeIcon icon={faArrowRight} width={20} height={20} />
+              </Link>
+            </div>
+
+            <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 shadow-sm">
+              <div className="flex items-start space-x-4">
+                <div className="bg-blue-100 rounded-full p-3">
+                  <FontAwesomeIcon width={25} height={25} icon={faCheckCircle} className="text-primary text-2xl" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">Visit Scheduling in Progress</h3>
+                  <p className="text-sm text-gray-600 space-y-1">
+                    <div className="flex items-center space-x-2">
+                      <FontAwesomeIcon width={25} height={25} icon={faCheckCircle} className="text-green-500 mr-2" />
+                      Visit is pending final approval
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <FontAwesomeIcon width={25} height={25} icon={faEnvelope} className="text-primary mr-2" />
+                      Confirmation email will be sent shortly
+                    </div>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Context */}
+            <div className="text-center">
+              <p className="text-xs text-gray-500">Please keep this QR code handy for your visit</p>
             </div>
           </div>
         }
