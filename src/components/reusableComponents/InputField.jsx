@@ -6,7 +6,7 @@ const InputField = ({ name, type, value, disabled, onChange, label, placeholder,
     <label className="input-label">{label}</label>
     <div className="flex">
       {type === 'tel' && (
-        <span className="inline-flex items-center px-4 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50 text-gray-500">
+        <span className="inline-flex items-center px-4 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50 dark:bg-gray-500 dark:text-white dark:border-[#4D4D4D] text-gray-500">
           +91
         </span>
       )}

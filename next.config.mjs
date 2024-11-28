@@ -11,6 +11,7 @@ const nextConfig = {
   env: {
     BASE_API_URL: 'https://visitor-management-system-backend.vercel.app/api/',
     VISITOR_REGISTRATION: 'visitor-register',
+    VISITOR_SIGNIN: 'signin',
     VISITOR_BY_ID: 'visitor/',
   },
 };

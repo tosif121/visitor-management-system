@@ -9,6 +9,15 @@ export async function visitorRegister(params) {
   }
 }
 
+export async function signin(params) {
+  try {
+    const response = await fetcher('POST', process.env.VISITOR_SIGNIN, params);
+    return response;
+  } catch (err) {
+    return null;
+  }
+}
+
 export async function visitorById(id) {
   try {
     const response = await fetcher('GET', `${process.env.VISITOR_BY_ID}${id}`);

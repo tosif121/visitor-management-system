@@ -15,8 +15,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import dynamic from 'next/dynamic';
-const LoadingSpinner = dynamic(() => import('../reusableComponents/LoadingSpinner'));
-const NoDataFound = dynamic(() => import('../reusableComponents/NoDataFound'));
+const LoadingSpinner = dynamic(() => import('../ReusableComponents/LoadingSpinner'));
+const NoDataFound = dynamic(() => import('../ReusableComponents/NoDataFound'));
 
 function VisitorDetails({ id }) {
   const [visitorData, setVisitorData] = useState(null);
@@ -64,7 +64,6 @@ function VisitorDetails({ id }) {
   return (
     <div className="min-h-screen flex justify-center items-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden">
-        {/* Header Section */}
         <div className="bg-primary text-white p-8 flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold tracking-tight">{visitorData.fullName}</h1>
@@ -73,14 +72,12 @@ function VisitorDetails({ id }) {
           <FontAwesomeIcon icon={faIdBadge} className="text-5xl" width={40} height={40} />
         </div>
 
-        {/* Details Grid */}
         <div className="p-8 grid md:grid-cols-2 gap-6">
           <DetailRow icon={faEnvelope} label="Email Address" value={visitorData.email} />
           <DetailRow icon={faPhone} label="Phone Number" value={visitorData.phoneNumber} />
           <DetailRow icon={faBuilding} label="Company" value={visitorData.company} />
           <DetailRow icon={faCalendarAlt} label="Visit Date" value={moment(visitorData.visitDate).format('LLLL')} />
 
-          {/* Additional Information Section */}
           <DetailRow
             icon={visitorData.needsCab ? faCheckCircle : faTimesCircle}
             label="Transportation"
@@ -89,7 +86,6 @@ function VisitorDetails({ id }) {
           <DetailRow icon={faMapMarkerAlt} label="Pickup Location" value={visitorData.pickupLocation} />
         </div>
 
-        {/* Footer Section */}
         <div className="bg-gray-100 p-6 text-center">
           <p className="text-sm text-gray-500">
             <FontAwesomeIcon icon={faInfoCircle} className="mr-2 text-blue-500" />
