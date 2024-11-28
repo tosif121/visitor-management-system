@@ -21,8 +21,8 @@ function Layout({ children }) {
       <TopBarPage handleSidebarToggle={handleSidebarToggle} />
       <div className="flex flex-grow">
         <SideBarPage sidebarVisible={sidebarVisible} />
-        <main className="flex-grow flex flex-col p-4">
-          <div className="flex-grow p-2">{children}</div>
+        <main className="flex-grow flex flex-col">
+          <div className="flex-grow md:p-4 p-2">{children}</div>
           <Footer />
         </main>
       </div>

@@ -2,13 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { navBarData } from '@/utils/navData';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import Cookies from 'js-cookie';
 
 export default function SideBarPage({ sidebarVisible }) {
   const [activeIndex, setActiveIndex] = useState(null);
   const dropdownRef = useRef(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const currentPath = router.pathname;
+    const activeItemIndex = navBarData.findIndex((item) => item.link && currentPath.startsWith(item.link));
+
+    setActiveIndex(activeItemIndex);
+  }, [router.pathname]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -21,7 +27,7 @@ export default function SideBarPage({ sidebarVisible }) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [activeIndex]);
+  }, []);
 
   const logout = () => {
     Cookies.remove('vms_token', { path: '/' });
@@ -35,7 +41,10 @@ export default function SideBarPage({ sidebarVisible }) {
     setActiveIndex(null);
   };
 
-  const handleItemClick = (item) => {
+  const handleItemClick = (item, index) => {
+    // Set the active index when an item is clicked
+    setActiveIndex(index);
+
     if (item.type === 'action' && item.label === 'Sign Out') {
       logout();
     } else if (item.type === 'link') {
@@ -55,8 +64,9 @@ export default function SideBarPage({ sidebarVisible }) {
           key={index}
           router={router}
           item={item}
+          index={index}
           isActive={activeIndex === index}
-          handleItemClick={handleItemClick}
+          handleItemClick={() => handleItemClick(item, index)}
           sidebarVisible={sidebarVisible}
         />
       ))}
@@ -64,11 +74,11 @@ export default function SideBarPage({ sidebarVisible }) {
   );
 }
 
-const SidebarItem = ({ item, isActive, onToggle, handleItemClick, sidebarVisible }) => {
+const SidebarItem = ({ item, isActive, handleItemClick, sidebarVisible, index }) => {
   return (
     <li className="relative pt-3">
       <div
-        onClick={() => handleItemClick(item)}
+        onClick={handleItemClick}
         className={`flex items-center justify-between cursor-pointer transition-colors duration-300 rounded-md ${
           isActive
             ? 'text-white dark:text-white dark:bg-[#001750] bg-primary'
