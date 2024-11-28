@@ -57,16 +57,16 @@ const Signin = () => {
   return (
     <>
       <Toaster position="top-right" reverseOrder={false} />
-      <div className="min-h-screen min-w-full bg-[url('/img/login-bg.svg')] bg-no-repeat bg-center bg-cover before:relative">
-        <div className="flex flex-col md:justify-center items-center min-h-screen">
-          <div className="flex space-x-3 items-center justify-center md:mt-6 mt-3">
+      <div className="min-h-screen min-w-full bg-[url('/img/login-bg.svg')] bg-no-repeat bg-center bg-cover before:relative bg-[#f8f8f8]">
+        <div className="flex flex-col justify-center items-center min-h-screen">
+          <div className="flex space-x-3 items-center justify-center">
             <Image width={50} height={50} src={'/img/logo.svg'} />
             <h1 className="text-primary text-5xl font-serif tracking-widest">VMS</h1>
           </div>
-          <div className="lg:w-2/6 2xl:w-3/12 w-3/4 sm:w-1/2  bg-white rounded-xl shadow-[0px_0px_7px_0px_rgba(0,0,0,0.1)] p-4 md:p-6 my-3 md:my-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-3 md:mb-6 text-center">Sign in</h2>
+          <div className="md:w-96 2xl:w-[430px] bg-white rounded-xl shadow-[0px_0px_7px_0px_rgba(0,0,0,0.1)] p-6 my-6">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Sign in</h2>
             <form onSubmit={handleSign} className="space-y-6 w-full">
-              <div className="space-y-2">
+              <div className="space-y-4">
                 <InputField
                   name="username"
                   type="text"
