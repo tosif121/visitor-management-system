@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { handleChange, validateForm, validationRules } from '@/utils/formUtils';
 import Image from 'next/image';
-import { InputField } from './ReusableComponents/InputField';
+import  InputField  from './ReusableComponents/InputField';
 import { signin } from '@/utils/servicesApi';
 import PasswordToggle from './ReusableComponents/PasswordToggle';
 import Cookies from 'js-cookie';
