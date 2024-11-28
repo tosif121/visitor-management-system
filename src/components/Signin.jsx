@@ -4,7 +4,6 @@ import { handleChange, validateForm, validationRules } from '@/utils/formUtils';
 import Image from 'next/image';
 import { InputField } from './ReusableComponents/InputField';
 import { signin } from '@/utils/servicesApi';
-import Link from 'next/link';
 import PasswordToggle from './ReusableComponents/PasswordToggle';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
