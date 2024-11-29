@@ -6,7 +6,6 @@ import Cookies from 'js-cookie';
 
 export default function SideBarPage({ sidebarVisible }) {
   const [activeIndex, setActiveIndex] = useState(null);
-  const dropdownRef = useRef(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,19 +15,6 @@ export default function SideBarPage({ sidebarVisible }) {
     setActiveIndex(activeItemIndex);
   }, [router.pathname]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        closeDropdown();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   const logout = () => {
     Cookies.remove('vms_token', { path: '/' });
     localStorage.removeItem('userDetails');
@@ -37,12 +23,7 @@ export default function SideBarPage({ sidebarVisible }) {
     window.location.reload();
   };
 
-  const closeDropdown = () => {
-    setActiveIndex(null);
-  };
-
   const handleItemClick = (item, index) => {
-    // Set the active index when an item is clicked
     setActiveIndex(index);
 
     if (item.type === 'action' && item.label === 'Sign Out') {
@@ -54,7 +35,6 @@ export default function SideBarPage({ sidebarVisible }) {
 
   return (
     <ul
-      ref={dropdownRef}
       className={`px-5 transition-all border-e dark:border-[#333] border-[#ddd] duration-500 whitespace-nowrap bg-white dark:bg-[#1a1a1a] ${
         sidebarVisible ? 'w-64' : 'w-20'
       }`}
@@ -74,7 +54,7 @@ export default function SideBarPage({ sidebarVisible }) {
   );
 }
 
-const SidebarItem = ({ item, isActive, handleItemClick, sidebarVisible, index }) => {
+const SidebarItem = ({ item, isActive, handleItemClick, sidebarVisible }) => {
   return (
     <li className="relative pt-3">
       <div

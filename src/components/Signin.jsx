@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { handleChange, validateForm, validationRules } from '@/utils/formUtils';
 import Image from 'next/image';
 import { InputField } from './ReusableComponents/InputField';
@@ -56,7 +56,6 @@ const Signin = () => {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} />
       <div className="min-h-screen min-w-full bg-[url('/img/login-bg.svg')] bg-no-repeat bg-center bg-cover before:relative bg-[#f8f8f8]">
         <div className="flex flex-col justify-center items-center min-h-screen">
           <div className="flex space-x-3 items-center justify-center">
