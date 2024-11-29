@@ -59,7 +59,7 @@ const Signin = () => {
       <div className="min-h-screen min-w-full bg-[url('/img/login-bg.svg')] bg-no-repeat bg-center bg-cover before:relative bg-[#f8f8f8]">
         <div className="flex flex-col justify-center items-center min-h-screen">
           <div className="flex space-x-3 items-center justify-center">
-            <Image width={50} height={50} src={'/img/logo.svg'} />
+            <Image width={50} height={50} src={'/img/logo.svg'} alt='logo' />
             <h1 className="text-primary text-5xl font-serif tracking-widest">VMS</h1>
           </div>
           <div className="md:w-96 2xl:w-[430px] bg-white rounded-xl shadow-[0px_0px_7px_0px_rgba(0,0,0,0.1)] p-6 my-6">

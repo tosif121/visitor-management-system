@@ -3,13 +3,17 @@ import { NextResponse } from 'next/server';
 export function middleware(request) {
   const path = request.nextUrl.pathname;
   const isLoginPage = path === '/signin';
-  const publicPath = path === '/visitor-details';
+  const isVisitorDetailsPath = path.startsWith('/visitor-details');
   const restrictedAdminPath = path === '/visitor-registration';
 
   const token = request.cookies.get('vms_token')?.value;
   const userDetails = request.cookies.get('user_details')?.value;
 
-  if ((isLoginPage || publicPath) && token) {
+  if (isVisitorDetailsPath) {
+    return NextResponse.next();
+  }
+
+  if (isLoginPage && token) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
@@ -17,7 +21,7 @@ export function middleware(request) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  if (!isLoginPage && !publicPath && !token) {
+  if (!isLoginPage && !token) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
 
@@ -25,5 +29,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/dashboard', '/visitor-details', '/visitor-registration', '/signin'],
+  matcher: ['/dashboard', '/visitor-details/:path*', '/visitor-registration', '/signin'],
 };
