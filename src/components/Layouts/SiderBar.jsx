@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { navBarData } from '@/utils/navData';
 import { useRouter } from 'next/router';
@@ -7,17 +7,30 @@ import Cookies from 'js-cookie';
 export default function SideBarPage({ sidebarVisible }) {
   const [activeIndex, setActiveIndex] = useState(null);
   const router = useRouter();
+  const [filteredNavBarData, setFilteredNavBarData] = useState([]);
+
+  useEffect(() => {
+    const details = Cookies.get('user_details');
+    if (details) {
+      const filteredData = navBarData.filter((item) => {
+        if (details !== 'admin') {
+          return item.access?.includes('user');
+        }
+        return item.access?.includes(details);
+      });
+
+      setFilteredNavBarData(filteredData);
+    }
+  }, []);
 
   useEffect(() => {
     const currentPath = router.pathname;
-    const activeItemIndex = navBarData.findIndex((item) => item.link && currentPath.startsWith(item.link));
-
+    const activeItemIndex = filteredNavBarData.findIndex((item) => item.link && currentPath.startsWith(item.link));
     setActiveIndex(activeItemIndex);
-  }, [router.pathname]);
+  }, [router.pathname, filteredNavBarData]);
 
   const logout = () => {
     Cookies.remove('vms_token', { path: '/' });
-    localStorage.removeItem('userDetails');
     localStorage.removeItem('theme');
     router.push('/signin');
     window.location.reload();
@@ -39,17 +52,18 @@ export default function SideBarPage({ sidebarVisible }) {
         sidebarVisible ? 'w-64' : 'w-20'
       }`}
     >
-      {navBarData.map((item, index) => (
-        <SidebarItem
-          key={index}
-          router={router}
-          item={item}
-          index={index}
-          isActive={activeIndex === index}
-          handleItemClick={() => handleItemClick(item, index)}
-          sidebarVisible={sidebarVisible}
-        />
-      ))}
+      {filteredNavBarData.length > 0 &&
+        filteredNavBarData.map((item, index) => (
+          <SidebarItem
+            key={index}
+            router={router}
+            item={item}
+            index={index}
+            isActive={activeIndex === index}
+            handleItemClick={() => handleItemClick(item, index)}
+            sidebarVisible={sidebarVisible}
+          />
+        ))}
     </ul>
   );
 }

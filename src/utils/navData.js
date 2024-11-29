@@ -6,16 +6,19 @@ export const navBarData = [
     link: '/dashboard',
     icon: faTachometerAlt,
     type: 'link',
+    access: ['admin', 'user'],
   },
   {
     label: 'Register Visitor',
     link: '/visitor-registration',
     icon: faUser,
     type: 'link',
+    access: ['user'],
   },
   {
     label: 'Sign Out',
     icon: faSignOutAlt,
     type: 'action',
+    access: ['admin', 'user'],
   },
 ];

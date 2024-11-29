@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import Footer from '@/components/Layouts/Footer';
-import SideBarPage from '@/components/Layouts/SiderBar';
 import { Manrope } from 'next/font/google';
-import TopBarPage from '@/components/Layouts/TopBar';
+import dynamic from 'next/dynamic';
+const TopBarPage = dynamic(() => import('@/components/Layouts/TopBar'));
+const SideBarPage = dynamic(() => import('@/components/Layouts/SiderBar'));
+const Footer = dynamic(() => import('@/components/Layouts/Footer'));
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -17,16 +18,16 @@ function Layout({ children }) {
   };
 
   return (
-    <section className={`flex flex-col min-h-screen ${manrope.className}`}>
+    <div className={`flex flex-col min-h-screen ${manrope.className}`}>
       <TopBarPage handleSidebarToggle={handleSidebarToggle} />
       <div className="flex flex-grow">
         <SideBarPage sidebarVisible={sidebarVisible} />
-        <main className="flex-grow flex flex-col">
+        <div className="flex-grow flex flex-col">
           <div className="flex-grow md:p-4 p-2">{children}</div>
           <Footer />
-        </main>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 

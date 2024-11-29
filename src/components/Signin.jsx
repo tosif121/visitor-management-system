@@ -40,8 +40,8 @@ const Signin = () => {
       const res = await signin(params);
       if (res.status) {
         Cookies.set('vms_token', res.data.token, { expires: 30, path: '/' });
-        const jsonData = JSON.stringify(res.data.user);
-        localStorage.setItem('userDetails', jsonData);
+        const role = res.data.user.username === 'vmsadmin' ? 'admin' : 'user';
+        Cookies.set('user_details', role);
         router.push('/dashboard');
         toast.success(res.message);
       } else {
