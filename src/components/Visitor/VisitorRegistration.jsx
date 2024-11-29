@@ -116,7 +116,7 @@ const VisitorRegistration = () => {
               </div>
 
               <Link
-                href={`visitor-details?id=${visitData?.visitorId}`}
+                href={`/visitor-details?id=${visitData?.visitorId}`}
                 className="text-primary hover:text-blue-800 transition-colors flex items-center space-x-2"
               >
                 <span>Scan QR code or click here for details</span>
